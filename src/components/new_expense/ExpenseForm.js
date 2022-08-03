@@ -2,11 +2,15 @@ import { useState } from "react";
 import "./ExpenseForm.css";
 
 const ExpenseForm = (props) => {
-    const [userInput, setUserInput] = useState({
+
+    const initialState = {
         title: "",
         amount: "",
         date: "",
-    });
+    };
+
+    const [userInput, setUserInput] = useState(initialState);
+    const [showForm, setShowForm] = useState(false);
 
     const titleChangeHandler = (e) => {
         setUserInput((prevState) => {
@@ -27,17 +31,27 @@ const ExpenseForm = (props) => {
     };
 
     const submitHandler = (e) => {
-        e.preventDefault();
-        console.log(new Date(userInput.date));
         props.onSaveExpenseData({
             ...userInput,
+            amount: +userInput.amount,
             date: new Date(userInput.date),
             id: Math.random().toString(),
         });
-        setUserInput({ title: "", amount: "", date: "" });
+        
+        clearAndHideExpenseForm(e);
     };
 
-    return (
+    const showExpenseForm = () => {
+        setShowForm(true);
+    }
+
+    const clearAndHideExpenseForm = (e) => {
+        e.preventDefault();
+        setShowForm(false);
+        setUserInput(initialState);
+    }
+
+    return (showForm ?
         <form onSubmit={submitHandler}>
             <div className="new-expense__controls">
                 <div className="new-expense__control">
@@ -70,9 +84,13 @@ const ExpenseForm = (props) => {
                 </div>
             </div>
             <div className="new-expense__actions">
+                <button type="button" onClick={clearAndHideExpenseForm}>Cancel</button>
                 <button type="Submit">Add Expense</button>
             </div>
-        </form>
+        </form> :
+        <div className="add-expense__actions">
+            <button onClick={showExpenseForm}>Add New Expense</button>
+        </div>
     );
 };
 
