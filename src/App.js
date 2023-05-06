@@ -1,20 +1,11 @@
-import Expenses from "./components/expenses/Expenses";
-import NewExpense from "./components/new_expense/NewExpense";
-import { useState } from "react";
+import SimpleInput from './components/SimpleInput';
 
-const App = () => {
-    const [expenses, setExpenses] = useState([]);
-
-    const addExpense = (expenseData) => {
-        setExpenses((prevState) => [...prevState, expenseData]);
-    };
-
-    return (
-        <div>
-            <NewExpense onAddExpense={addExpense} />
-            <Expenses items={expenses} />
-        </div>
-    );
-};
+function App() {
+  return (
+    <div className="app">
+      <SimpleInput />
+    </div>
+  );
+}
 
 export default App;
